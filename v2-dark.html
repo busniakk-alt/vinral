@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>vinral — Dark (Design 2)</title>
+<meta name="theme-color" content="#0a0b0f" />
+<style>
+  :root{
+    --bg:#0a0b0f; --panel:#14161d; --ink:#f3f4f7; --soft:#969cab; --line:#262a35;
+    --accent:#38bdf8; --accent-rgb:56,189,248; --cta-ink:#06080c;
+    --radius:24px;
+    --font:"Aptos","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Inter",Roboto,Helvetica,Arial,sans-serif;
+    --display:"Aptos Display","Aptos","Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"Inter",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);
+    height:100dvh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased;position:relative}
+  a{color:inherit;text-decoration:none}
+  .bgglow{position:fixed;top:-22%;left:50%;width:120vw;height:60vh;transform:translateX(-50%);
+    background:var(--accent);filter:blur(120px);opacity:.16;z-index:0;transition:background-color .6s ease;pointer-events:none}
+  .bar,.strip,.stage,.controls{position:relative;z-index:1}
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px}
+  .brand{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+  .brand b{color:var(--accent);transition:color .5s}
+  .vswitch{display:flex;gap:6px;font-size:12px;color:var(--soft)}
+  .vswitch a{padding:6px 10px;border:1px solid var(--line);border-radius:999px}
+  .vswitch a.on{background:var(--ink);color:#06080c;border-color:var(--ink)}
+
+  .strip{display:flex;gap:10px;padding:4px 16px 12px;overflow-x:auto;scrollbar-width:none}
+  .strip::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;width:74px;
+    background:transparent;border:0;cursor:pointer;padding:6px 2px;border-radius:16px}
+  .tab .thumb{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;font-size:28px;
+    background:linear-gradient(150deg,#1b1e27,#0e1015);border:1px solid var(--line);overflow:hidden;transition:.25s}
+  .tab .thumb img{width:100%;height:100%;object-fit:cover}
+  .tab .tlabel{font-size:11px;color:var(--soft);font-weight:600;white-space:nowrap;max-width:74px;overflow:hidden;text-overflow:ellipsis}
+  .tab.active .thumb{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 22px -2px var(--accent);transform:translateY(-2px)}
+  .tab.active .tlabel{color:var(--ink)}
+
+  .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:13px;padding:6px 22px 8px;text-align:center;transition:opacity .26s ease, transform .26s ease}
+  .stage.out{opacity:0;transform:translateY(10px) scale(.98)}
+  .mediawrap{position:relative;display:grid;place-items:center;width:min(86vw,360px);height:42dvh;max-height:380px}
+  .glow{position:absolute;width:80%;height:80%;border-radius:50%;background:var(--accent);filter:blur(60px);
+    opacity:.5;z-index:0;transition:background-color .6s ease}
+  .media{position:relative;z-index:1;width:100%;height:100%;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);display:grid;place-items:center;overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,.5)}
+  .media img{width:100%;height:100%;object-fit:contain;padding:10px}
+  .media .ph{font-size:120px;line-height:1}
+  .counter{font-size:12px;letter-spacing:.18em;color:var(--soft);font-weight:700}
+  .name{font-family:var(--display);font-weight:800;font-size:clamp(26px,6vw,40px);letter-spacing:-.02em;line-height:1.05;margin:0}
+  .bestfor{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;transition:color .5s}
+  .desc{color:var(--soft);font-size:clamp(14px,3.6vw,16px);max-width:520px;margin:0 auto;line-height:1.5}
+  .price{font-weight:800;font-size:18px;color:var(--accent);transition:color .5s}
+  .price small{font-weight:600;color:var(--soft);font-size:12px}
+  .cta{display:inline-flex;align-items:center;gap:.4em;background:var(--accent);color:var(--cta-ink);font-weight:800;
+    font-size:16px;padding:14px 28px;border-radius:999px;transition:background-color .5s, transform .12s;
+    box-shadow:0 10px 30px -6px var(--accent)}
+  .cta:hover{transform:translateY(-2px)}
+
+  .controls{display:flex;align-items:center;justify-content:center;gap:16px;padding:8px 0 18px}
+  .nav{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    font-size:20px;cursor:pointer;display:grid;place-items:center;transition:.15s}
+  .nav:hover{border-color:var(--accent);color:var(--accent)}
+  .dots{display:flex;gap:7px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:0;cursor:pointer;transition:.2s}
+  .dot.on{background:var(--accent);transform:scale(1.4)}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <div class="bgglow" id="bgglow"></div>
+  <div class="bar">
+    <div class="brand" id="brand">vinral</div>
+    <div class="vswitch">
+      <a href="v1-spotlight.html">1 · Spotlight</a>
+      <a href="v2-dark.html" class="on">2 · Dark</a>
+      <a href="v3-split.html">3 · Split</a>
+    </div>
+  </div>
+
+  <div class="strip" id="strip"></div>
+
+  <div class="stage" id="stage">
+    <div class="mediawrap"><div class="glow"></div><div class="media" id="media"></div></div>
+    <div class="counter" id="counter"></div>
+    <div class="bestfor" id="bestfor"></div>
+    <h1 class="name" id="name"></h1>
+    <p class="desc" id="desc"></p>
+    <div class="price" id="price"></div>
+    <a class="cta" id="cta" target="_blank" rel="sponsored noopener"></a>
+  </div>
+
+  <div class="controls">
+    <button class="nav" id="prev" aria-label="Previous">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav" id="next" aria-label="Next">›</button>
+  </div>
+
+<script src="products.js"></script>
+<script>
+(function(){
+  var P=(window.PRODUCTS||[]).filter(function(p){return p.status!=="paused";})
+        .sort(function(a,b){return (b.priority||0)-(a.priority||0);});
+  var S=window.SITE||{};
+  if(!P.length){document.getElementById("stage").innerHTML="<p>products.js not found — keep it in the same folder.</p>";return;}
+  if(S.brandName){var nm=S.brandName.split(" "),last=nm.pop();
+    document.getElementById("brand").innerHTML=nm.join(" ")+(nm.length?" ":"")+"<b>"+last+"</b>";}
+
+  var SHORT={"misting-fan":"Misting fan","car-shade":"Car shade","neck-fan":"Neck fan","cooling-towel":"Cooling towel",
+    "sunset-lamp":"Sunset lamp","perfume-set":"Perfume set","hair-trio":"Hair trio","phone-case":"Phone case"};
+  var COLORS={"misting-fan":"#38bdf8","car-shade":"#fb923c","neck-fan":"#22d3ee","cooling-towel":"#34d399",
+    "sunset-lamp":"#fb7185","perfume-set":"#c084fc","hair-trio":"#f59e0b","phone-case":"#60a5fa"};
+  var FALLBACK=["#38bdf8","#fb923c","#22d3ee","#34d399","#fb7185","#c084fc","#f59e0b","#60a5fa"];
+  function accent(p,idx){return COLORS[p.id]||FALLBACK[idx%FALLBACK.length];}
+  function hexRgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(function(c){return c+c;}).join("");
+    var n=parseInt(h,16);return (n>>16&255)+","+(n>>8&255)+","+(n&255);}
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  function pad(n){return (n<10?"0":"")+n;}
+
+  var strip=document.getElementById("strip"),stage=document.getElementById("stage"),
+      media=document.getElementById("media"),counter=document.getElementById("counter"),
+      bestfor=document.getElementById("bestfor"),name=document.getElementById("name"),
+      desc=document.getElementById("desc"),price=document.getElementById("price"),
+      cta=document.getElementById("cta"),dots=document.getElementById("dots"),root=document.documentElement;
+  var i=0,busy=false,n=P.length;
+
+  strip.innerHTML=P.map(function(p,idx){
+    var thumb=p.image?'<img src="'+esc(p.image)+'" alt="">':esc(p.emoji||"🛍️");
+    return '<button class="tab" data-i="'+idx+'"><span class="thumb">'+thumb+'</span>'+
+           '<span class="tlabel">'+esc(SHORT[p.id]||p.productName)+'</span></button>';
+  }).join("");
+  dots.innerHTML=P.map(function(_,idx){return '<button class="dot" data-i="'+idx+'"></button>';}).join("");
+
+  function render(idx){
+    var p=P[idx],col=accent(p,idx);
+    root.style.setProperty("--accent",col);
+    root.style.setProperty("--accent-rgb",hexRgb(col));
+    media.innerHTML=p.image?'<img src="'+esc(p.image)+'" alt="'+esc(p.productName)+'">':'<div class="ph">'+esc(p.emoji||"🛍️")+'</div>';
+    counter.textContent=pad(idx+1)+" / "+pad(n);
+    bestfor.textContent=p.bestFor?("Best for · "+p.bestFor):"";
+    name.textContent=p.productName||"";
+    desc.textContent=p.mainBenefit||p.shortHook||"";
+    price.innerHTML=(p.price?esc(p.price):"")+' <small>· check live price</small>';
+    cta.textContent=p.cta||"View product →";
+    cta.setAttribute("href",p.link||"#");
+    [].forEach.call(strip.children,function(b,bi){b.classList.toggle("active",bi===idx);});
+    [].forEach.call(dots.children,function(d,di){d.classList.toggle("on",di===idx);});
+    var act=strip.children[idx]; if(act&&act.scrollIntoView)act.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});
+  }
+  function preload(idx){var p=P[(idx+n)%n];if(p&&p.image){var im=new Image();im.src=p.image;}}
+  function go(idx){idx=(idx+n)%n;if(busy||idx===i)return;busy=true;stage.classList.add("out");
+    setTimeout(function(){i=idx;render(i);requestAnimationFrame(function(){stage.classList.remove("out");});
+      busy=false;preload(i+1);preload(i-1);},230);}
+
+  strip.addEventListener("click",function(e){var b=e.target.closest("[data-i]");if(b)go(+b.dataset.i);});
+  dots.addEventListener("click",function(e){var b=e.target.closest("[data-i]");if(b)go(+b.dataset.i);});
+  document.getElementById("prev").addEventListener("click",function(){go(i-1);});
+  document.getElementById("next").addEventListener("click",function(){go(i+1);});
+  document.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")go(i-1);if(e.key==="ArrowRight")go(i+1);});
+  var sx=null;document.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;},{passive:true});
+  document.addEventListener("touchend",function(e){if(sx==null)return;var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>45)go(i+(dx<0?1:-1));sx=null;},{passive:true});
+
+  render(0);preload(1);preload(n-1);
+})();
+</script>
+</body>
+</html>
